@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Agent.Models;
 using Agent.Services.Interfaces;
-using Common;
 
 namespace Agent.Services
 {

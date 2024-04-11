@@ -1,7 +1,8 @@
 using System;
+using Agent.Services.Interfaces;
 using Microsoft.Extensions.Configuration;
 
-namespace Common
+namespace Agent.Services
 {
     public class AppConfig : IAppConfig
     {

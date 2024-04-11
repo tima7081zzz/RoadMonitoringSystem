@@ -1,4 +1,4 @@
-namespace Common
+namespace Agent.Services.Interfaces
 {
     public interface ICustomLogger
     {

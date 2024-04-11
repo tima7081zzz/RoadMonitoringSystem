@@ -2,7 +2,6 @@ using System;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Agent.Services.Interfaces;
-using Common;
 using MQTTnet;
 using MQTTnet.Client;
 

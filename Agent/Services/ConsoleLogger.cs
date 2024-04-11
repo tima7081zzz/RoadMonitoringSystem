@@ -1,6 +1,7 @@
 using System;
+using Agent.Services.Interfaces;
 
-namespace Common
+namespace Agent.Services
 {
     public class ConsoleLogger : ICustomLogger
     {
