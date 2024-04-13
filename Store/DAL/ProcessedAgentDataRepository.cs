@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -24,6 +25,8 @@ namespace Store.DAL
         }
 
         public async Task<ProcessedAgentData> Add(ProcessedAgentData data) => (await _entities.AddAsync(data)).Entity;
+
+        public async Task Add(IEnumerable<ProcessedAgentData> data) => await _entities.AddRangeAsync(data);
 
         public void Update(ProcessedAgentData data) => _entities.Update(data);
     }

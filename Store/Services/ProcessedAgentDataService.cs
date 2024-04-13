@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Agent.Exceptions;
 using Store.DAL;
@@ -40,6 +42,14 @@ namespace Store.Services
             await _unitOfWork.SaveChanges();
 
             return added;
+        }
+
+        public async Task BulkAdd(IEnumerable<ProcessedAgentDataRequestModel> data)
+        {
+            var entities = data.Select(Map);
+
+            await _unitOfWork.ProcessedAgentDataRepository.Add(entities);
+            await _unitOfWork.SaveChanges();
         }
 
         public async Task Update(int id, ProcessedAgentDataRequestModel data)

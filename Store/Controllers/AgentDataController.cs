@@ -65,5 +65,12 @@ namespace Store.Controllers
             var added = await _processedAgentDataService.Add(data);
             return Ok(added);
         }
+
+        [HttpPost("bulk")]
+        public async Task<IActionResult> BulkAdd([FromBody] BulkAddAgentDatasRequestModel model)
+        {
+            await _processedAgentDataService.BulkAdd(model.Models);
+            return Ok();
+        }
     }
 }
