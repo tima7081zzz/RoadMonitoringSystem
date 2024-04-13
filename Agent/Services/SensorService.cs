@@ -22,7 +22,7 @@ namespace Agent.Services
         {
             await using var scope = _scopeFactory.CreateAsyncScope();
 
-            var csvDataReader = scope.ServiceProvider.GetRequiredService<ICsvDataReader>();
+            using var csvDataReader = scope.ServiceProvider.GetRequiredService<ICsvDataReader>();
             var queueService = scope.ServiceProvider.GetRequiredService<IQueueService>();
 
             while (true)
@@ -32,7 +32,7 @@ namespace Agent.Services
                 var data = await csvDataReader.Read();
                 if (data is null)
                 {
-                    continue;
+                    break;
                 }
 
                 await queueService.Publish(data);

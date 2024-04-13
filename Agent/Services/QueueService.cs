@@ -33,11 +33,6 @@ namespace Agent.Services
             await client.DisconnectAsync();
         }
 
-        public async Task Run()
-        {
-
-        }
-
         private async Task<IMqttClient> Connect()
         {
             var client = new MqttFactory().CreateMqttClient();
