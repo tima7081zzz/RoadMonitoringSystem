@@ -22,11 +22,7 @@ services:
       - postgres_db
     restart: always
     environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: pass
-      POSTGRES_DB: storeDb
-      POSTGRES_HOST: localhost
-      POSTGRES_PORT: 5432
+      Store__PostgresConnectionString: "Server=postgres_db;Port=5432;Database=StoreDb;User Id=user;Password=pass;"
     ports:
       - "8000:80"
     networks:
