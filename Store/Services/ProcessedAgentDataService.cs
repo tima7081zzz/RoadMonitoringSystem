@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Agent.Exceptions;
 using Store.DAL;
 using Store.DAL.Entities;
+using Store.Exceptions;
 using Store.Models;
 using Store.Services.Interfaces;
 

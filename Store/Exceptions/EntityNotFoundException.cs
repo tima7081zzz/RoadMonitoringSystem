@@ -1,6 +1,6 @@
 using System;
 
-namespace Agent.Exceptions
+namespace Store.Exceptions
 {
     public class EntityNotFoundException : Exception
     {
