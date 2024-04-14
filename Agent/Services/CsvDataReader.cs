@@ -17,7 +17,6 @@ namespace Agent.Services
         public CsvDataReader(ICustomLogger logger)
         {
             _logger = logger;
-            var basePath = AppDomain.CurrentDomain.BaseDirectory;
 
             _accelerometerStreamReader = new StreamReader(@"accelerometer.csv");
             _gpsStreamReader = new StreamReader(@"gps.csv");
