@@ -6,7 +6,7 @@ namespace Hub.Models
     {
         public Accelerometer? Accelerometer { get; set; }
         public Gps? Gps { get; set; }
-        public DateTime Timestamp { get; set; }
+        public DateTimeOffset Timestamp { get; set; }
         public int UserId { get; set; }
     }
 }

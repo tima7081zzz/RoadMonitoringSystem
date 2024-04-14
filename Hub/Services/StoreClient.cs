@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
@@ -21,7 +22,19 @@ namespace Hub.Services
 
         public async Task BulkAdd(IEnumerable<ProcessedAgentData> datas)
         {
-            var request = new {Models = datas};
+            var models = datas.Select(x => new StoreAgentDataRequestModel
+            {
+                RoadState = x.RoadState,
+                UserId = x.AgentData.UserId,
+                X = x.AgentData.Accelerometer?.X ?? 0,
+                Y = x.AgentData.Accelerometer?.Y ?? 0,
+                Z = x.AgentData.Accelerometer?.Z ?? 0,
+                Longitude = x.AgentData.Gps?.Longitude ?? 0,
+                Latitude = x.AgentData.Gps?.Latitude ?? 0,
+                TimeStamp = x.AgentData.Timestamp
+            });
+
+            var request = new {Models = models};
             await _httpClient.PostAsJsonAsync(_options.Value.StoreBulkAddUrl, request);
         }
     }
