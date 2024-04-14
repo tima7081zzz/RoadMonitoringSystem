@@ -54,10 +54,17 @@ namespace Store.Services
 
         public async Task Update(int id, ProcessedAgentDataRequestModel data)
         {
-            var entity = Map(data);
+            var entity = await _unitOfWork.ProcessedAgentDataRepository.Get(id);
+            EntityNotFoundException.ThrowIfNull(entity);
 
-            await _unitOfWork.ProcessedAgentDataRepository.Get(id);
-            EntityNotFoundException.ThrowIfNull(data);
+            entity!.RoadState = data.RoadState;
+            entity.UserId = data.UserId;
+            entity.X = data.X;
+            entity.Y = data.Y;
+            entity.Z = data.Z;
+            entity.Longitude = data.Longitude;
+            entity.Latitude = data.Latitude;
+            entity.TimeStamp = data.TimeStamp;
 
             _unitOfWork.ProcessedAgentDataRepository.Update(entity);
             await _unitOfWork.SaveChanges();
