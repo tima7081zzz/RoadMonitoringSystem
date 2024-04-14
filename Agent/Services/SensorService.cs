@@ -10,12 +10,10 @@ namespace Agent.Services
     public class SensorService : ISensorService, IHostedService
     {
         private readonly IServiceScopeFactory _scopeFactory;
-        private readonly IOptionsSnapshot<AgentOptions> _options;
 
-        public SensorService(IServiceScopeFactory scopeFactory, IOptionsSnapshot<AgentOptions> options)
+        public SensorService(IServiceScopeFactory scopeFactory)
         {
             _scopeFactory = scopeFactory;
-            _options = options;
         }
 
         public async Task PublishSensorsData()
@@ -24,10 +22,11 @@ namespace Agent.Services
 
             using var csvDataReader = scope.ServiceProvider.GetRequiredService<ICsvDataReader>();
             var queueService = scope.ServiceProvider.GetRequiredService<IQueueService>();
+            var options = scope.ServiceProvider.GetRequiredService<IOptionsSnapshot<AgentOptions>>();
 
             while (true)
             {
-                await Task.Delay(_options.Value.PublishDelay);
+                await Task.Delay(options.Value.PublishDelay);
 
                 var data = await csvDataReader.Read();
                 if (data is null)
