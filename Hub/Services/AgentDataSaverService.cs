@@ -7,6 +7,7 @@ using Hub.Models;
 using Hub.Services.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MQTTnet;
 using MQTTnet.Client;
@@ -15,15 +16,17 @@ namespace Hub.Services
 {
     public class AgentDataSaverService : IAgentDataSaverService, IHostedService
     {
+        private readonly ILogger _logger;
         private readonly IOptionsSnapshot<HubOptions> _options;
         private IStoreClient _storeClient;
         private readonly SemaphoreSlim _semaphoreSlim = new(1, 1);
 
         private readonly ConcurrentBag<ProcessedAgentData> _datas = new();
 
-        public AgentDataSaverService(IServiceScopeFactory scopeFactory, IOptionsSnapshot<HubOptions> options)
+        public AgentDataSaverService(IServiceScopeFactory scopeFactory, IOptionsSnapshot<HubOptions> options, ILoggerFactory loggerFactory)
         {
             _options = options;
+            _logger = loggerFactory.CreateLogger<AgentDataSaverService>();
             _storeClient = scopeFactory.CreateScope().ServiceProvider.GetRequiredService<IStoreClient>();
         }
 
@@ -37,7 +40,8 @@ namespace Hub.Services
                 var message = JsonSerializer.Deserialize<ProcessedAgentData>(e.ApplicationMessage.PayloadSegment.Array);
                 if (message is null)
                 {
-                    throw new Exception("ia dolbaieb");
+                    _logger.LogError("Failed to deserialize message payload");
+                    return;
                 }
 
                 await Save(message);
@@ -57,7 +61,7 @@ namespace Hub.Services
                 }
 
                 await _storeClient.BulkAdd(_datas);
-                Console.WriteLine($"{_datas.Count} messages were saved");
+                _logger.LogInformation($"{_datas.Count} messages were saved");
 
                 _datas.Clear();
             }

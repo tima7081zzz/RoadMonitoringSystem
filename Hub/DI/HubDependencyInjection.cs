@@ -2,6 +2,7 @@ using Hub.Services;
 using Hub.Services.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace Hub.DI
 {
@@ -14,6 +15,7 @@ namespace Hub.DI
             services.AddHttpClient<IStoreClient, StoreClient>();
             services.AddHostedService<AgentDataSaverService>();
             services.AddSingleton<IAgentDataSaverService, AgentDataSaverService>();
+            services.AddLogging(cfg => cfg.AddConsole());
 
             services.AddControllers();
             services.AddEndpointsApiExplorer();
