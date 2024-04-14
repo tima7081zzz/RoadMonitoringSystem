@@ -1,21 +1,21 @@
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Agent.Services.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 
 namespace Agent.Services
 {
     public class SensorService : ISensorService, IHostedService
     {
         private readonly IServiceScopeFactory _scopeFactory;
+        private readonly IOptionsSnapshot<AgentOptions> _options;
 
-        private readonly TimeSpan _publishDelay = TimeSpan.FromMilliseconds(50);
-
-        public SensorService(IServiceScopeFactory scopeFactory)
+        public SensorService(IServiceScopeFactory scopeFactory, IOptionsSnapshot<AgentOptions> options)
         {
             _scopeFactory = scopeFactory;
+            _options = options;
         }
 
         public async Task PublishSensorsData()
@@ -27,7 +27,7 @@ namespace Agent.Services
 
             while (true)
             {
-                await Task.Delay(_publishDelay);
+                await Task.Delay(_options.Value.PublishDelay);
 
                 var data = await csvDataReader.Read();
                 if (data is null)
