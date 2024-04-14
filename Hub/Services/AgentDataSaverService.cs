@@ -55,7 +55,7 @@ namespace Hub.Services
                 await _semaphoreSlim.WaitAsync();
 
                 _datas.Add(data);
-                if (_datas.Count < 1)
+                if (_datas.Count < _options.Value.BatchSaveSize)
                 {
                     return;
                 }
